@@ -1,49 +1,103 @@
-<html lang="en"><head>
+<!doctype html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="stylesheet" href="general.css">
-
-    <title>Computer Graphics</title>
-
+    <title>02561 Computer Graphics</title>
 </head>
 <body>
 
-    <h1>02561 Computer Graphics</h1>
-    Solutions to the weekly worksheets, and individual project, in the course '02561 Computer Graphics' at DTU. 
+<header class="site-header">
+    <span class="eyebrow">DTU &middot; 02561</span>
+    <h1>Computer Graphics</h1>
+    <p>Worksheet solutions and the individual project for the course <em>02561 Computer Graphics</em> at DTU. Each card opens an interactive WebGL demo.</p>
+</header>
 
-    <h2></h2>
+<main class="cards">
 
-    <a href="Project/">Project</a><br>
-    Animation System and model interaction<br><br>
+    <a class="card card--feature" href="Project/">
+        <span class="card-tag">Project</span>
+        <h3>Animation system &amp; model interaction</h3>
+        <p>The capstone &mdash; a 3D scene with selectable models, shadow mapping, and an interactive camera.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet01/">Worksheet 1</a><br>
-    Drawing 2D shapes<br><br>
+    <a class="card" href="Worksheet01/">
+        <span class="card-tag">Worksheet 01</span>
+        <h3>Drawing 2D shapes</h3>
+        <p>First WebGL primitives &mdash; clearing the canvas, buffers, shader programs, simple transforms.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet02/">Worksheet 2</a><br>
-    Interactive 2D drawing program<br><br>
+    <a class="card" href="Worksheet02/">
+        <span class="card-tag">Worksheet 02</span>
+        <h3>Interactive 2D drawing</h3>
+        <p>Mouse input, dynamic geometry, building shapes from user clicks.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet03/">Worksheet 3</a><br>
-    3D Wireframe cube transformations<br><br>
+    <a class="card" href="Worksheet03/">
+        <span class="card-tag">Worksheet 03</span>
+        <h3>3D wireframe transformations</h3>
+        <p>Stepping into 3D &mdash; model/view matrices, depth testing, rotation.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet04/">Worksheet 4</a><br>
-    Lighting and (forward) shading<br><br>
+    <a class="card" href="Worksheet04/">
+        <span class="card-tag">Worksheet 04</span>
+        <h3>Lighting &amp; forward shading</h3>
+        <p>Phong reflection model &mdash; diffuse, ambient, specular, shininess.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet05/">Worksheet 5</a><br>
-    Rendering a triangle mesh<br><br>
+    <a class="card" href="Worksheet05/">
+        <span class="card-tag">Worksheet 05</span>
+        <h3>Triangle mesh rendering</h3>
+        <p>Loading and rendering OBJ-based meshes with normals.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet06/">Worksheet 6</a><br>
-    texturing<br><br>
+    <a class="card" href="Worksheet06/">
+        <span class="card-tag">Worksheet 06</span>
+        <h3>Texturing</h3>
+        <p>UV coordinates, texture filtering, sampling on a sphere.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet07/">Worksheet 7</a><br>
-    Cube mapping and normal mapping<br><br>
+    <a class="card" href="Worksheet07/">
+        <span class="card-tag">Worksheet 07</span>
+        <h3>Cube &amp; normal mapping</h3>
+        <p>Skyboxes, environment reflection, per-fragment normal mapping.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet08/">Worksheet 8</a><br>
-    Shadow Projection<br><br>
+    <a class="card" href="Worksheet08/">
+        <span class="card-tag">Worksheet 08</span>
+        <h3>Shadow projection</h3>
+        <p>Planar projected shadows &mdash; first attempt at shadow rendering.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet09/">Worksheet 9</a><br>
-    Shadow Mapping<br><br>
+    <a class="card" href="Worksheet09/">
+        <span class="card-tag">Worksheet 09</span>
+        <h3>Shadow mapping</h3>
+        <p>Render-to-texture depth pass and per-fragment shadow tests.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
 
-    <a href="Worksheet10/">Worksheet 10</a><br>
-    Quaternions<br><br>
-</body></html>
+    <a class="card" href="Worksheet10/">
+        <span class="card-tag">Worksheet 10</span>
+        <h3>Quaternions</h3>
+        <p>Smooth rotations and orientation interpolation.</p>
+        <span class="card-arrow">&rarr;</span>
+    </a>
+
+</main>
+
+<footer class="site-footer">
+    Michael Jarberg &middot; DTU &middot; 02561 Computer Graphics
+</footer>
+
+</body>
+</html>

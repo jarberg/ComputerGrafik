@@ -1,38 +1,327 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:wght@300;400;500;700&display=swap');
 
-
-@import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
-
+/* =========================================================== */
+/*  Design tokens                                              */
+/* =========================================================== */
 
 :root {
-    --color_primary: #f0d800;
-    --color_primary_dark: #2b2700;
-    --color_secondary: #333540;
-    --color_accent: #ff8878;
-    --color_code: #dad1a2;
+    /* Original palette — preserved so canvas pages stay on-brand */
+    --color_primary: #f0d800;          /* mustard yellow */
+    --color_primary_dark: #2b2700;     /* deep brown bg */
+    --color_secondary: #333540;        /* slate (toolbox panels) */
+    --color_accent: #ff8878;           /* coral */
+    --color_code: #dad1a2;             /* muted parchment */
+
+    /* Extended palette for the redesigned pages */
+    --color_card: #38320a;
+    --color_card_hover: #4a4214;
+    --color_border: rgba(240, 216, 0, 0.18);
+    --color_text: #f5ecc6;
+    --color_muted: rgba(245, 236, 198, 0.65);
+
+    --radius: 12px;
+    --radius_sm: 6px;
+
+    --space_1: 8px;
+    --space_2: 16px;
+    --space_3: 24px;
+    --space_4: 32px;
+    --space_5: 48px;
+    --space_6: 64px;
+
+    --font_mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+
+    --shadow_md: 0 4px 16px rgba(0, 0, 0, 0.45);
 }
 
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color_primary_dark);
+    color: var(--color_text);
+    font-family: var(--font_mono);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 body {
-    font-family: 'Roboto Mono';
+    background:
+        radial-gradient(circle at 50% -10%, rgba(240, 216, 0, 0.08), transparent 60%),
+        var(--color_primary_dark);
+    min-height: 100vh;
+}
+
+a {
+    color: var(--color_accent);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+a:hover { color: var(--color_primary); }
+
+/* =========================================================== */
+/*  Site header                                                */
+/* =========================================================== */
+
+.site-header {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: var(--space_6) var(--space_3) var(--space_4);
+    text-align: left;
+}
+.site-header .breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space_1);
+    margin-bottom: var(--space_3);
+    font-size: 13px;
+    color: var(--color_muted);
+}
+.site-header .breadcrumb a { color: var(--color_muted); }
+.site-header .breadcrumb a:hover { color: var(--color_primary); }
+.site-header .breadcrumb .sep { color: rgba(245, 236, 198, 0.3); }
+
+.site-header .eyebrow {
+    display: inline-block;
+    color: var(--color_primary);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: var(--space_2);
+    padding: 4px 10px;
+    border: 1px solid var(--color_border);
+    border-radius: 999px;
+    background: rgba(240, 216, 0, 0.04);
+}
+
+.site-header h1 {
+    font-family: var(--font_mono);
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 44px);
+    letter-spacing: -0.01em;
+    margin: 0 0 var(--space_2);
+    color: var(--color_primary);
+}
+.site-header p {
+    margin: 0;
+    color: var(--color_muted);
+    max-width: 640px;
+}
+
+/* =========================================================== */
+/*  Card grid (landing)                                        */
+/* =========================================================== */
+
+.cards {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 var(--space_3) var(--space_6);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space_3);
+}
+
+.card {
+    display: block;
+    padding: var(--space_3);
+    background: var(--color_card);
+    border: 1px solid var(--color_border);
+    border-radius: var(--radius);
+    color: var(--color_text);
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+.card:hover {
+    background: var(--color_card_hover);
+    border-color: rgba(240, 216, 0, 0.45);
+    transform: translateY(-2px);
+}
+.card .card-tag {
+    display: inline-block;
+    color: var(--color_primary);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: var(--space_2);
+}
+.card h3 {
+    margin: 0 0 var(--space_1);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color_text);
+    line-height: 1.3;
+}
+.card p {
+    margin: 0;
+    color: var(--color_muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+.card .card-arrow {
+    position: absolute;
+    bottom: var(--space_3);
+    right: var(--space_3);
+    color: var(--color_accent);
+    font-size: 18px;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.card:hover .card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Hero card for the Project — spans the full row */
+.card--feature {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, #4a4214 0%, #2b2700 100%);
+    border-color: rgba(240, 216, 0, 0.35);
+    padding: var(--space_4);
+}
+.card--feature .card-tag { color: var(--color_accent); }
+.card--feature h3 {
+    font-size: clamp(20px, 2.4vw, 26px);
+    margin-bottom: var(--space_2);
+}
+.card--feature p {
+    font-size: 14px;
+    max-width: 560px;
+}
+
+/* =========================================================== */
+/*  Parts list (worksheet pages)                               */
+/* =========================================================== */
+
+.parts-list {
+    max-width: 720px;
+    margin: 0 auto var(--space_6);
+    padding: 0 var(--space_3);
+    list-style: none;
+}
+.parts-list li {
+    margin: 0;
+    border-bottom: 1px solid var(--color_border);
+}
+.parts-list li:first-child {
+    border-top: 1px solid var(--color_border);
+}
+.parts-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space_2);
+    color: var(--color_text);
+    transition: background 0.15s ease, padding-left 0.15s ease;
+}
+.parts-list a:hover {
+    background: rgba(240, 216, 0, 0.05);
+    padding-left: var(--space_3);
+    color: var(--color_primary);
+}
+.parts-list a .part-num {
+    color: var(--color_primary);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    margin-right: var(--space_2);
+}
+.parts-list a .part-arrow {
+    color: var(--color_accent);
+    opacity: 0.55;
+}
+.parts-list a:hover .part-arrow { opacity: 1; }
+
+/* =========================================================== */
+/*  Footer                                                     */
+/* =========================================================== */
+
+.site-footer {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: var(--space_4) var(--space_3) var(--space_5);
+    color: var(--color_muted);
+    font-size: 12px;
     text-align: center;
-    align-content: center;
-    font-size: 15px;
-    color: white;
-    background-color: var(--color_primary_dark);
+    border-top: 1px solid var(--color_border);
+}
+.site-footer a {
+    color: var(--color_muted);
+    border-bottom: 1px dotted var(--color_border);
+}
+.site-footer a:hover { color: var(--color_primary); }
+
+@media (max-width: 600px) {
+    .site-header { padding: var(--space_4) var(--space_2) var(--space_3); }
+    .cards { padding: 0 var(--space_2) var(--space_4); gap: var(--space_2); }
+    .parts-list { padding: 0 var(--space_2); }
 }
 
+/* =========================================================== */
+/*  PRESERVED legacy classes                                   */
+/*  These are referenced by the interactive canvas pages       */
+/*  (Project/index.html and Worksheet*/partNN/main.html).      */
+/*  Keeping them functional so existing demos keep working.    */
+/* =========================================================== */
 
-.seperator {
-    margin: 1%;
-    margin-right: auto;
-    margin-left: auto;
-    width: 60%;
-    border-top: dashed;
-    border-width: 1.75px;
-    opacity: 50%;
-    border-color: white;
+.program-container {
+    margin: auto;
+    max-width: 1100px;
 }
 
+.program-container td {
+    padding: 0;
+    vertical-align: top;
+    height: 100%;
+}
+
+.canvas {
+    margin: 0 auto;
+}
+
+.toolbox {
+    width: 220px;
+    margin: auto;
+    border-collapse: collapse;
+    background: var(--color_card);
+    border: 1px solid var(--color_border);
+    border-radius: var(--radius_sm);
+    padding: 8px;
+    color: var(--color_text);
+}
+.toolbox-row {
+    border-bottom: 1px solid var(--color_border);
+}
+.toolbox-row td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.toolbox .toolbox-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+.toolbox b {
+    color: var(--color_primary);
+    font-weight: 500;
+}
+
+.radio-list {
+    width: 150px;
+    height: 100px;
+    background-color: var(--color_secondary);
+    margin: auto;
+    overflow: auto;
+}
+
+.label {
+    margin: 0 auto 8px auto;
+    font-weight: bold;
+}
 
 .description {
     margin: auto;
@@ -41,131 +330,65 @@ body {
     width: 55%;
     min-width: 700px;
     text-align: center;
-    
-}   
-
-
-.canvas {
-    margin: 0% auto;
 }
 
-
-.program-container {
-    margin: auto;
-}
-
-.program-container td {
-    padding: 0%;
-    vertical-align: top;
-    height: 100%;
-}
-
-
-
-.toolbox {
-    width: 200px;
-    margin: auto; /* Center in cell */
-
-    /* Without the row border doesn't work*/ 
-    border-collapse: collapse; 
-    /* margin-left: auto;
+.seperator {
+    margin: 1%;
     margin-right: auto;
-    display: table; */
+    margin-left: auto;
+    width: 60%;
+    border-top: dashed;
+    border-width: 1.75px;
+    opacity: 0.5;
+    border-color: white;
 }
-
-
-.toolbox-row {
-    border-bottom: solid;
-    border-color: var(--color_primary_dark);
-}
-
-.toolbox-row td {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-
-.toolbox .toolbox-row:last-child {
-    border-bottom: none;
-    padding-bottom: 0px;
-}
-
-
-.radio-list {
-    width: 150px;
-    height: 100px;
-    background-color: var(--color_secondary);
-    margin: auto;
-    overflow: auto;
-    
-}
-
-/* I.e. used to label options in toolbox */
-.label {
-    margin: 0% auto 8px auto;
-    font-weight: bold;
-}
-
-
-/* Generic link style */
-a {
-    font-size: 18px;
-    display: inline-block;
-    margin-top: 10px;
-    color: var(--color_accent);
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-
-
 
 button {
-
-    height: 25px;
-
-    font-family: "Roboto Mono";
-    color: var(--color_primary);
-
-    background-color: white;
-
+    height: 28px;
+    font-family: var(--font_mono);
+    color: var(--color_primary_dark);
+    background-color: var(--color_primary);
     border: none;
-    padding: 3px 5px;
-
-    border-radius: 5px;
-    /* border-color: unset; */
-
-    
+    padding: 4px 12px;
+    border-radius: var(--radius_sm);
     outline: none;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
 }
-
-
-
 button:hover {
-    color: white;
     background-color: var(--color_accent);
-    transition: transform 0.15s;
+    color: white;
 }
+button:active { transform: scale(0.97); }
 
-button:active {
-    transform: scale(0.95);
-    transition: transform 0.15s;
+input[type="range"].slider {
+    width: 100%;
+    accent-color: var(--color_primary);
 }
-
-
+input[type="color"] {
+    border: 1px solid var(--color_border);
+    border-radius: var(--radius_sm);
+    background: var(--color_card);
+    cursor: pointer;
+    height: 26px;
+    width: 50px;
+    padding: 0;
+}
+input[type="checkbox"] {
+    accent-color: var(--color_primary);
+}
 
 strong {
     display: block;
     margin: 20px;
     font-weight: normal;
     font-style: italic;
-    color: var(--color_code); 
+    color: var(--color_code);
 }
 
-
 p.fps-text {
-    color: greenyellow;
+    color: var(--color_primary);
+    font-size: 12px;
+    letter-spacing: 0.1em;
 }
