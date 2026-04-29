@@ -136,8 +136,9 @@ class InteractionManager{
     if(drawSBox && this.selectionRenderer.region_vertexArray.length >0){
       let projection = camera.pMatrix;
       let viewMatrix = camera.mvMatrix;
+
       gl.useProgram(this.selectionRenderer.selection_indicator_shader)
-      gl.uniformMatrix4fv(gl.getUniformLocation(this.selectionRenderer.selection_indicator_shader,"projection"), false, flatten(projection));
+      gl.uniformMatrix4fv(gl.getUniformLocation(this.selectionRenderer.selection_indicator_shader,"projection"), false, flatten(inverse4(projection)));
       gl.uniformMatrix4fv(gl.getUniformLocation(this.selectionRenderer.selection_indicator_shader,"modelViewMatrix"), false, flatten(viewMatrix));
       gl.uniformMatrix4fv(gl.getUniformLocation(this.selectionRenderer.selection_indicator_shader,"objTransform"), false, flatten(mat4()));
 
