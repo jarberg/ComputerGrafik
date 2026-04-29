@@ -84,14 +84,13 @@ function create_cube_map(shader, invert=false, index=0){
         //console.log( location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_posx.jpg')
 
     var cubemapArray = [
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_posx.jpg',  // POSITIVE_X
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_negx.jpg',  // NEGATIVE_X
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_posy.jpg',  // POSITIVE_Y
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_negy.jpg',  // NEGATIVE_Y
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_posz.jpg',  // POSITIVE_Z
-        location.origin+"/computerGrafik/computergraphics/"+'Images/cubeMap/cloudyhills_negz.jpg'   // NEGATIVE_Z
-                        ];
-
+        "../../Images/cubeMap/cloudyhills_posx.jpg",
+        "../../Images/cubeMap/cloudyhills_negx.jpg",
+        "../../Images/cubeMap/cloudyhills_posy.jpg",
+        "../../Images/cubeMap/cloudyhills_negy.jpg",
+        "../../Images/cubeMap/cloudyhills_posz.jpg",
+        "../../Images/cubeMap/cloudyhills_negz.jpg"
+    ];
     gl.activeTexture( gl.TEXTURE0+index);
     var texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
