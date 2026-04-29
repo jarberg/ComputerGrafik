@@ -308,6 +308,37 @@ function init(){
 
 var fpsOutput;
 var rotateCamera;
+
+// Lighting state (declared at module scope so the render loop and slider listeners share it)
+var lightPosition = vec4(0.0, 0.0, -1.0, 1.0 );
+var lightAmbient = vec4(0.5, 0.5, 0.5, 1.0 );  // grey by default; tweaked by #ambient-color
+var lightDiffuse = vec4(0.5, 0.5, 0.5, 1.0 );  // grey by default; tweaked by #directional-light-color
+var lightSpecular = vec4(0.5, 0.5, 0.5, 1.0 );
+
+var materialAmbient  = vec4(0.5, 0.5, 0.5, 1.0);
+var materialDiffuse  = vec4(0.5, 0.5, 0.5, 1.0);
+var materialSpecular = vec4(0.5, 0.5, 0.5, 1.0);
+var materialShininess = 100.0;
+
+var ambientProduct  = mult(lightAmbient, materialAmbient);
+var diffuseProduct  = mult(lightDiffuse, materialDiffuse);
+var specularProduct = mult(lightSpecular, materialSpecular);
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+function recomputeProducts(){
+  ambientProduct  = mult(lightAmbient,  materialAmbient);
+  diffuseProduct  = mult(lightDiffuse,  materialDiffuse);
+  specularProduct = mult(lightSpecular, materialSpecular);
+}
+
 function main() {
   init()
 
@@ -315,39 +346,64 @@ function main() {
     division = this.value;
     document.getElementById("subdivNum").textContent = division
   };
+
+  // Directional light colour (also drives specular highlight colour by default).
+  document.getElementById("directional-light-color").addEventListener('input', function() {
+    var c = hexToRgb(this.value);
+    lightDiffuse  = vec4(c.r/255, c.g/255, c.b/255, 1.0);
+    lightSpecular = vec4(c.r/255, c.g/255, c.b/255, 1.0);
+    recomputeProducts();
+  });
+
+  // Ambient light colour.
+  document.getElementById("ambient-color").addEventListener('input', function() {
+    var c = hexToRgb(this.value);
+    lightAmbient = vec4(c.r/255, c.g/255, c.b/255, 1.0);
+    recomputeProducts();
+  });
+
+  // Material reflection coefficients (scalar 0..1 sliders -> grey-scale material color).
+  document.getElementById("mat-slider-diffuse").addEventListener('input', function() {
+    var k = parseFloat(this.value);
+    materialDiffuse = vec4(k, k, k, 1.0);
+    recomputeProducts();
+  });
+  document.getElementById("mat-slider-ambient").addEventListener('input', function() {
+    var k = parseFloat(this.value);
+    materialAmbient = vec4(k, k, k, 1.0);
+    recomputeProducts();
+  });
+  document.getElementById("mat-slider-specular").addEventListener('input', function() {
+    var k = parseFloat(this.value);
+    materialSpecular = vec4(k, k, k, 1.0);
+    recomputeProducts();
+  });
+  document.getElementById("mat-slider-shine").addEventListener('input', function() {
+    materialShininess = parseFloat(this.value);
+  });
+
+  // Seed the products from the slider/picker default values so the initial frame matches the UI.
+  (function syncFromUI(){
+    var dlc = hexToRgb(document.getElementById("directional-light-color").value);
+    var amc = hexToRgb(document.getElementById("ambient-color").value);
+    lightDiffuse  = vec4(dlc.r/255, dlc.g/255, dlc.b/255, 1.0);
+    lightSpecular = vec4(dlc.r/255, dlc.g/255, dlc.b/255, 1.0);
+    lightAmbient  = vec4(amc.r/255, amc.g/255, amc.b/255, 1.0);
+
+    var kd = parseFloat(document.getElementById("mat-slider-diffuse").value);
+    var ka = parseFloat(document.getElementById("mat-slider-ambient").value);
+    var ks = parseFloat(document.getElementById("mat-slider-specular").value);
+    materialDiffuse  = vec4(kd, kd, kd, 1.0);
+    materialAmbient  = vec4(ka, ka, ka, 1.0);
+    materialSpecular = vec4(ks, ks, ks, 1.0);
+    materialShininess = parseFloat(document.getElementById("mat-slider-shine").value);
+    recomputeProducts();
+  })();
+
   fpsOutput = document.getElementById("fpsOutput")
   rotateCamera = document.getElementById("rotate_Camera")
   objects.push(new Sphere(vec4(0,0,0,0)))
   camera1 = new Camera()
-
-
-
-
-  var lightPosition = vec4(0.0, 0.0, -1.0, 1.0 );
-  var lightAmbient = vec4(0.0, 0.0, 0.0, 1.0 );
-  var lightDiffuse = vec4( 1.0, 1.0, 1.0, 1.0 );
-  var lightSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
-
-  var materialAmbient = vec4( 0.1, 0.1, 0.1, 1.0 );
-  var materialDiffuse = vec4( 1.0, 0.8, 0.0, 1.0 );
-  var materialSpecular = vec4( 1.0, 1.0, 1.0, 1.0 );
-  var materialShininess = 20.0;
-
-  var ambientProduct =  mult(lightAmbient, materialAmbient);
-  var diffuseProduct = mult(lightDiffuse, materialDiffuse);
-  var specularProduct = mult(lightSpecular, materialSpecular);
-
-
-  gl.uniform4fv( gl.getUniformLocation(program,
-      "ambientProduct"),flatten(ambientProduct) );
-  gl.uniform4fv( gl.getUniformLocation(program,
-      "diffuseProduct"),flatten(diffuseProduct) );
-  gl.uniform4fv( gl.getUniformLocation(program,
-      "specularProduct"),flatten(specularProduct) );
-  gl.uniform4fv( gl.getUniformLocation(program,
-      "lightPosition"),flatten(lightPosition) );
-  gl.uniform1f( gl.getUniformLocation(program,
-      "shininess"),materialShininess );
 
   render()
 }
@@ -359,6 +415,13 @@ function render(){
   var now = performance.now();
   frameRenderTime = (now-lastTime)/1000
   camera1.update(frameRenderTime)
+
+  // Re-upload lighting uniforms each frame so slider/colour-picker changes take effect.
+  gl.uniform4fv( gl.getUniformLocation(program,"ambientProduct"),  flatten(ambientProduct) );
+  gl.uniform4fv( gl.getUniformLocation(program,"diffuseProduct"),  flatten(diffuseProduct) );
+  gl.uniform4fv( gl.getUniformLocation(program,"specularProduct"), flatten(specularProduct) );
+  gl.uniform4fv( gl.getUniformLocation(program,"lightPosition"),   flatten(lightPosition) );
+  gl.uniform1f(  gl.getUniformLocation(program,"shininess"),       materialShininess );
 
   var normalMatrix = [
     vec3(camera1.mvMatrix[0][0], camera1.mvMatrix[0][1], camera1.mvMatrix[0][2]),

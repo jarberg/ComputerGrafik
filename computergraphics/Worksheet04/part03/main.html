@@ -16,24 +16,35 @@
 
         uniform vec4 ambientProduct, diffuseProduct, specularProduct;
         attribute vec4 vNormal;
-        vec4 ambient, diffuse, specular;
 
         uniform vec4 lightPosition;
         uniform float shininess;
 
         void main() {
 
-            vec3 pos = (modelViewMatrix * a_Position).xyz;               // pos is vertex position in eye coordinates
+            vec3 pos = (modelViewMatrix * a_Position).xyz;                // pos is vertex position in eye coordinates
             vec3 L = -normalize( lightPosition.xyz - pos );               // vector from vertex position to light source
 
-            if(lightPosition.w == 0.0) L = -normalize(lightPosition.xyz); // check for non-directional light
+            if(lightPosition.w == 0.0) L = -normalize(lightPosition.xyz); // directional light: use direction directly
 
-            vec3 N = normalize( normalMatrix*vNormal.xyz);               // Transform vertex normal into eye coordinates
+            vec3 N = normalize( normalMatrix*vNormal.xyz);                // Transform vertex normal into eye coordinates
 
-            float Kd = max( dot(L, N), 0.0 );                            // diffuse reflection coefficient
-            vec4  diffuse = Kd*diffuseProduct;                           // diffuseProduct = lightEmmission*MaterialEmission
+            float Kd = max( dot(L, N), 0.0 );                             // diffuse reflection coefficient
+            vec4  diffuse = Kd*diffuseProduct;                            // diffuseProduct = lightEmission*materialEmission
 
-            v_Color = diffuse;
+            vec4 ambient = ambientProduct;                                // ambient term
+
+            vec3 E = normalize( pos );
+            vec3 H = normalize( L + E );                                  // halfway vector (Blinn-Phong)
+
+            float Ks = pow( max(dot(N, H), 0.0), shininess );
+            vec4  specular = Ks * specularProduct;
+
+            if( dot(L, N) < 0.0 ) {                                       // no specular when light is behind surface
+                specular = vec4(0.0, 0.0, 0.0, 1.0);
+            }
+
+            v_Color = diffuse + ambient + specular;
             v_Color.a = 1.0;
 
             gl_Position = projection * modelViewMatrix * a_Position;
