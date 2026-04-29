@@ -359,9 +359,9 @@ class backFace extends model{
 
     draw(camera, shadow = false){
         super.draw()
-        gl.uniformMatrix4fv(gl.getUniformLocation(program,"projection"), false, flatten(mat4()));
-        gl.uniformMatrix4fv(gl.getUniformLocation(program,"modelViewMatrix"), false, flatten(mat4()));
-        gl.uniformMatrix4fv(gl.getUniformLocation(program,"objTransform"), false, flatten(mat4()));
+        gl.uniformMatrix4fv(gl.getUniformLocation(this.shader,"projection"), false, flatten(mat4()));
+        gl.uniformMatrix4fv(gl.getUniformLocation(this.shader,"modelViewMatrix"), false, flatten(mat4()));
+        gl.uniformMatrix4fv(gl.getUniformLocation(this.shader,"objTransform"), false, flatten(mat4()));
 
         let inverseviewMatrix = camera.mvMatrix;
         inverseviewMatrix = inverse4(inverseviewMatrix)
@@ -371,8 +371,8 @@ class backFace extends model{
             inverse4(camera.pMatrix)
         );
 
-        gl.uniform1i(gl.getUniformLocation(program,"isreflective"), 0)
-        gl.uniformMatrix4fv( gl.getUniformLocation(program,"mTex"), false, flatten(textureMatrix));
+        gl.uniform1i(gl.getUniformLocation(this.shader,"isreflective"), 0)
+        gl.uniformMatrix4fv( gl.getUniformLocation(this.shader,"mTex"), false, flatten(textureMatrix));
         gl.drawArrays(gl.TRIANGLES, 0, this.vertexes.length);
     }
 

@@ -28,7 +28,6 @@ void main()
     //v_PositionFromLight = u_MvpMatrixFromLight*objTransform*vec4(a_Position.x, 0, a_Position.y,1);
     v_PositionFromLight = u_MvpMatrixFromLight * objTransform * a_Position;
 
-    gl_Position = a_Color+vNormal+vec4(vTexCoord,vTexCoord);
     v_Color = a_Color;
 
     gl_PointSize = 10.0;

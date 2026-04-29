@@ -9,6 +9,5 @@ uniform mat4 objTransform;
 precision mediump float;
 void main() {
 
-    gl_Position = a_Color+vNormal+vec4(vTexCoord,vTexCoord);
     gl_Position = projection*modelViewMatrix*objTransform*a_Position;
 }

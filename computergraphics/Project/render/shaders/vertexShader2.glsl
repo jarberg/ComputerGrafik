@@ -27,8 +27,6 @@ void main()
 
     v_PositionFromLight = u_MvpMatrixFromLight*objTransform* a_Position;
 
-    gl_Position = a_Color+vNormal+vec4(vTexCoord,vTexCoord);
-
     vec3 light = (lightPosition).xyz;
     vec3 pos = (objTransform*a_Position).xyz;
     p = lightPosition-objTransform*a_Position;

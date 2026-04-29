@@ -100,7 +100,7 @@ class InteractionManager{
         found.push(modelRenderer.objects[i])
       }
     }
-    this.add_selectionList(found)
+    this.set_selectionList(found)
     return found
   }
 
@@ -125,16 +125,12 @@ class InteractionManager{
   set_selectionList(selection){
     this.selectionList = selection
   }
-  add_selectionList(selection){
-    this.selectionList=selection
-  }
 
   draw(camera){
     if (this.selecting) {
       this.selectionRenderer.draw_selection_region_indicator()
     }
     if(this.selectionList.length > 0 ){
-      console.log(this.selectionList)
      this.selectionRenderer.draw_selection(camera, this.selectionList)
     }
     if(drawSBox && this.selectionRenderer.region_vertexArray.length >0){
@@ -196,14 +192,15 @@ function setupControls(){
   }, false);
     canvas.onmousedown = (e) => {
       e.preventDefault();
+      // e.button: 0 = left, 1 = middle, 2 = right
       if (e.button === 0) {
-        rightMousePressed = true;
+        leftMousePressed = true;
       }
       else if (e.button === 1) {
         middleMousePressed = true;
       }
       else if (e.button === 2) {
-        leftMousePressed = true;
+        rightMousePressed = true;
         var bBox = e.target.getBoundingClientRect();
 
         interMan.start_selection(vec3(-1 + 2.0*((e.clientX-bBox.left)/canvas.width),
@@ -214,20 +211,20 @@ function setupControls(){
     }
     canvas.onmouseleave = (e) => {
       e.preventDefault();
-      rightMousePressed = false;
-      middleMousePressed = false;
       leftMousePressed = false;
+      middleMousePressed = false;
+      rightMousePressed = false;
     }
     canvas.onmouseup = (e) => {
       e.preventDefault();
       if (e.button === 0) {
-        rightMousePressed = false;
+        leftMousePressed = false;
       }
       else if (e.button === 1) {
         middleMousePressed = false;
       }
       else if (e.button === 2) {
-        leftMousePressed = false;
+        rightMousePressed = false;
         if(!interMan.selecting ){
           var bBox = e.target.getBoundingClientRect();
           var input = vec3(-1 + 2.0*((e.clientX-bBox.left)/canvas.width),
@@ -244,7 +241,7 @@ function setupControls(){
     }
     canvas.onmousemove = (e) => {
       e.preventDefault();
-      if(leftMousePressed){
+      if(rightMousePressed){
         interMan.set_selecting(true);
         var bBox = e.target.getBoundingClientRect();
         var input = vec3(-1 + 2.0*((e.clientX-bBox.left)/canvas.width),
@@ -259,8 +256,6 @@ function setupControls(){
 
       if( middleMousePressed ) {
         if(e.altKey){
-          ''
-          pos = subtract(camera.eye,camera.at)
           camera.move(add(camera.position, add(camera.eye, subtract(camera.eye,camera.at))))
         }
       else{

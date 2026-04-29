@@ -142,6 +142,9 @@ class transform{
 
     checkRotationOrder(tempMat) {
         if (this.rotation_order === "XYZ") return this.orderXYZ(tempMat);
+        // Fall back to XYZ rather than silently returning undefined for an unknown rotation_order.
+        console.warn("Unknown rotation_order '" + this.rotation_order + "', falling back to XYZ");
+        return this.orderXYZ(tempMat);
     }
 
     move(vec){
